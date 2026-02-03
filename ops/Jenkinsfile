@@ -1,0 +1,84 @@
+pipeline {
+    agent any
+    
+    tools {
+        maven 'Maven-3.8'
+        jdk 'JDK-17'
+    }
+    
+    environment {
+        PROJECT_NAME = 'CloudFileSystem'
+        MAVEN_OPTS = '-Xmx1024m'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                echo '====== Stage 1: Checking out source code ======'
+                checkout scm
+                echo 'Source code checked out successfully'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                echo '====== Stage 2: Building project with Maven ======'
+                sh 'mvn clean compile -DskipTests'
+                echo 'Build completed successfully'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo '====== Stage 3: Running unit tests ======'
+                sh 'mvn test'
+                echo 'Tests completed'
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                    echo 'Test results published'
+                }
+            }
+        }
+        
+        stage('Package') {
+            steps {
+                echo '====== Stage 4: Packaging application ======'
+                sh 'mvn package -DskipTests'
+                echo 'Packaging completed'
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                    echo 'Artifacts archived'
+                }
+            }
+        }
+        
+        stage('Code Quality') {
+            steps {
+                echo '====== Stage 5: Running code quality checks ======'
+                sh 'mvn verify -DskipTests'
+                echo 'Code quality checks completed'
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo '========================================='
+            echo '✓ Pipeline completed successfully!'
+            echo '========================================='
+        }
+        failure {
+            echo '========================================='
+            echo '✗ Pipeline failed - check logs'
+            echo '========================================='
+        }
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()
+        }
+    }
+}

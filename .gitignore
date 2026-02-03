@@ -1,0 +1,48 @@
+# Common
+.DS_Store
+*.log
+tmp/
+temp/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Backend (Java/Maven)
+backend/target/
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+backend/local.db
+*.db
+
+# Frontend (Node/React)
+frontend/node_modules/
+**/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ML Service (Python)
+ml-service/venv/
+**/venv/
+**/__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+*.pkl
+!ml-service/model_metadata.json
+
+# Ops
+ops/secrets/

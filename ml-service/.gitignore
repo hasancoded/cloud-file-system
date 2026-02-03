@@ -1,0 +1,12 @@
+# Add to .gitignore
+
+# ML Service - Generated files
+ml_predictor_service/venv/
+ml_predictor_service/__pycache__/
+ml_predictor_service/*.pyc
+ml_predictor_service/training_data.csv
+ml_predictor_service/model.pkl
+ml_predictor_service/scaler.pkl
+ml_predictor_service/model_*.pkl
+ml_predictor_service/model_metadata.json
+ml_predictor_service/data_visualization.png
